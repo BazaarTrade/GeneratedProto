@@ -32,10 +32,10 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MatchingEngineClient interface {
-	PlaceOrder(ctx context.Context, in *PlaceOrderReq, opts ...grpc.CallOption) (*OrdersRes, error)
-	CancelOrder(ctx context.Context, in *CancelOrderReq, opts ...grpc.CallOption) (*Order, error)
-	GetCurrentOrders(ctx context.Context, in *UserIDReq, opts ...grpc.CallOption) (*OrdersRes, error)
-	GetOrders(ctx context.Context, in *UserIDReq, opts ...grpc.CallOption) (*OrdersRes, error)
+	PlaceOrder(ctx context.Context, in *PlaceOrderReq, opts ...grpc.CallOption) (*Orders, error)
+	CancelOrder(ctx context.Context, in *OrderID, opts ...grpc.CallOption) (*Order, error)
+	GetCurrentOrders(ctx context.Context, in *UserID, opts ...grpc.CallOption) (*Orders, error)
+	GetOrders(ctx context.Context, in *UserID, opts ...grpc.CallOption) (*Orders, error)
 	CreateOrderBook(ctx context.Context, in *OrderBookSymbol, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteOrderBook(ctx context.Context, in *OrderBookSymbol, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
@@ -48,9 +48,9 @@ func NewMatchingEngineClient(cc grpc.ClientConnInterface) MatchingEngineClient {
 	return &matchingEngineClient{cc}
 }
 
-func (c *matchingEngineClient) PlaceOrder(ctx context.Context, in *PlaceOrderReq, opts ...grpc.CallOption) (*OrdersRes, error) {
+func (c *matchingEngineClient) PlaceOrder(ctx context.Context, in *PlaceOrderReq, opts ...grpc.CallOption) (*Orders, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(OrdersRes)
+	out := new(Orders)
 	err := c.cc.Invoke(ctx, MatchingEngine_PlaceOrder_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func (c *matchingEngineClient) PlaceOrder(ctx context.Context, in *PlaceOrderReq
 	return out, nil
 }
 
-func (c *matchingEngineClient) CancelOrder(ctx context.Context, in *CancelOrderReq, opts ...grpc.CallOption) (*Order, error) {
+func (c *matchingEngineClient) CancelOrder(ctx context.Context, in *OrderID, opts ...grpc.CallOption) (*Order, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Order)
 	err := c.cc.Invoke(ctx, MatchingEngine_CancelOrder_FullMethodName, in, out, cOpts...)
@@ -68,9 +68,9 @@ func (c *matchingEngineClient) CancelOrder(ctx context.Context, in *CancelOrderR
 	return out, nil
 }
 
-func (c *matchingEngineClient) GetCurrentOrders(ctx context.Context, in *UserIDReq, opts ...grpc.CallOption) (*OrdersRes, error) {
+func (c *matchingEngineClient) GetCurrentOrders(ctx context.Context, in *UserID, opts ...grpc.CallOption) (*Orders, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(OrdersRes)
+	out := new(Orders)
 	err := c.cc.Invoke(ctx, MatchingEngine_GetCurrentOrders_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -78,9 +78,9 @@ func (c *matchingEngineClient) GetCurrentOrders(ctx context.Context, in *UserIDR
 	return out, nil
 }
 
-func (c *matchingEngineClient) GetOrders(ctx context.Context, in *UserIDReq, opts ...grpc.CallOption) (*OrdersRes, error) {
+func (c *matchingEngineClient) GetOrders(ctx context.Context, in *UserID, opts ...grpc.CallOption) (*Orders, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(OrdersRes)
+	out := new(Orders)
 	err := c.cc.Invoke(ctx, MatchingEngine_GetOrders_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -112,10 +112,10 @@ func (c *matchingEngineClient) DeleteOrderBook(ctx context.Context, in *OrderBoo
 // All implementations must embed UnimplementedMatchingEngineServer
 // for forward compatibility.
 type MatchingEngineServer interface {
-	PlaceOrder(context.Context, *PlaceOrderReq) (*OrdersRes, error)
-	CancelOrder(context.Context, *CancelOrderReq) (*Order, error)
-	GetCurrentOrders(context.Context, *UserIDReq) (*OrdersRes, error)
-	GetOrders(context.Context, *UserIDReq) (*OrdersRes, error)
+	PlaceOrder(context.Context, *PlaceOrderReq) (*Orders, error)
+	CancelOrder(context.Context, *OrderID) (*Order, error)
+	GetCurrentOrders(context.Context, *UserID) (*Orders, error)
+	GetOrders(context.Context, *UserID) (*Orders, error)
 	CreateOrderBook(context.Context, *OrderBookSymbol) (*emptypb.Empty, error)
 	DeleteOrderBook(context.Context, *OrderBookSymbol) (*emptypb.Empty, error)
 	mustEmbedUnimplementedMatchingEngineServer()
@@ -128,16 +128,16 @@ type MatchingEngineServer interface {
 // pointer dereference when methods are called.
 type UnimplementedMatchingEngineServer struct{}
 
-func (UnimplementedMatchingEngineServer) PlaceOrder(context.Context, *PlaceOrderReq) (*OrdersRes, error) {
+func (UnimplementedMatchingEngineServer) PlaceOrder(context.Context, *PlaceOrderReq) (*Orders, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PlaceOrder not implemented")
 }
-func (UnimplementedMatchingEngineServer) CancelOrder(context.Context, *CancelOrderReq) (*Order, error) {
+func (UnimplementedMatchingEngineServer) CancelOrder(context.Context, *OrderID) (*Order, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CancelOrder not implemented")
 }
-func (UnimplementedMatchingEngineServer) GetCurrentOrders(context.Context, *UserIDReq) (*OrdersRes, error) {
+func (UnimplementedMatchingEngineServer) GetCurrentOrders(context.Context, *UserID) (*Orders, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCurrentOrders not implemented")
 }
-func (UnimplementedMatchingEngineServer) GetOrders(context.Context, *UserIDReq) (*OrdersRes, error) {
+func (UnimplementedMatchingEngineServer) GetOrders(context.Context, *UserID) (*Orders, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOrders not implemented")
 }
 func (UnimplementedMatchingEngineServer) CreateOrderBook(context.Context, *OrderBookSymbol) (*emptypb.Empty, error) {
@@ -186,7 +186,7 @@ func _MatchingEngine_PlaceOrder_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _MatchingEngine_CancelOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CancelOrderReq)
+	in := new(OrderID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -198,13 +198,13 @@ func _MatchingEngine_CancelOrder_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: MatchingEngine_CancelOrder_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MatchingEngineServer).CancelOrder(ctx, req.(*CancelOrderReq))
+		return srv.(MatchingEngineServer).CancelOrder(ctx, req.(*OrderID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _MatchingEngine_GetCurrentOrders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserIDReq)
+	in := new(UserID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -216,13 +216,13 @@ func _MatchingEngine_GetCurrentOrders_Handler(srv interface{}, ctx context.Conte
 		FullMethod: MatchingEngine_GetCurrentOrders_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MatchingEngineServer).GetCurrentOrders(ctx, req.(*UserIDReq))
+		return srv.(MatchingEngineServer).GetCurrentOrders(ctx, req.(*UserID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _MatchingEngine_GetOrders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserIDReq)
+	in := new(UserID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -234,7 +234,7 @@ func _MatchingEngine_GetOrders_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: MatchingEngine_GetOrders_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MatchingEngineServer).GetOrders(ctx, req.(*UserIDReq))
+		return srv.(MatchingEngineServer).GetOrders(ctx, req.(*UserID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
