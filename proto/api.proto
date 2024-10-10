@@ -7,7 +7,7 @@ option go_package = "/pb";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
-service matchingEngine {
+service MatchingEngine {
     rpc PlaceOrder(PlaceOrderReq) returns (Orders) {}
     rpc CancelOrder(OrderID) returns (order) {}
 
@@ -19,16 +19,15 @@ service matchingEngine {
 
     rpc GetTrades(Ping) returns (stream Trades) {}
     rpc GetOrderBookSnapshot(Ping) returns (stream OrderBookSnapshot) {}
-    rpc GetPrecisedOrderBookSnapshot(Ping) returns (stream PrecisedOrderBookSnapshots) {}
 }
 
 message PlaceOrderReq {
-    int64 userID = 1;
-    bool isBid = 2;
-    string symbol = 3;
-    string qty = 4;
-    string price = 5;
-    string type = 6;
+    int64 UserID = 1;
+    bool IsBid = 2;
+    string Symbol = 3;
+    string Qty = 4;
+    string Price = 5;
+    string Type = 6;
 }
 
 message Orders {
@@ -36,33 +35,33 @@ message Orders {
 }
 
 message OrderID {
-    int64 orderID = 1;
+    int64 OrderID = 1;
 }
 
 message UserID {
-    int64 userID = 1;
+    int64 UserID = 1;
 }
 
 message OrderBookSymbol {
-    string symbol = 1;
+    string Symbol = 1;
 }
 
 message order {
     int64 ID = 1;
-    int64 userID = 2;
-    bool isBid = 3;
-    string symbol = 4;
-    string price = 5;
-    string qty = 6;
-    string sizeFilled = 7;
-    string status = 8;
-    string type = 9;
-    google.protobuf.Timestamp created_at = 10;
-    google.protobuf.Timestamp closed_at = 11;
+    int64 UserID = 2;
+    bool IsBid = 3;
+    string Symbol = 4;
+    string Price = 5;
+    string Qty = 6;
+    string SizeFilled = 7;
+    string Status = 8;
+    string Type = 9;
+    google.protobuf.Timestamp CreatedAt = 10;
+    google.protobuf.Timestamp ClosedAt = 11;
 }
 
 message Ping {
-    string ping = 1;
+    string Ping = 1;
 }
 
 message OrderBookSnapshot {
@@ -74,22 +73,18 @@ message OrderBookSnapshot {
 }
 
 message Limit {
-    string price = 1;
-    string qty = 2;
+    string Price = 1;
+    string Qty = 2;
 }
 
 message Trades {
-    string symbol = 1;
-    repeated trade trade = 2;
+    string Symbol = 1;
+    repeated trade Trade = 2;
 }
 
 message trade {
-    bool isBid = 1;
-    string price = 2;
-    string qty = 3;
-    google.protobuf.Timestamp time = 4;
-}
-
-message PrecisedOrderBookSnapshots {
-    map<int32, OrderBookSnapshot> precisedOrderBookSnapshot = 1;
+    bool IsBid = 1;
+    string Price = 2;
+    string Qty = 3;
+    google.protobuf.Timestamp Time = 4;
 }
