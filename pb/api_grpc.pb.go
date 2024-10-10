@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.27.3
-// source: internal/proto/api.proto
+// source: proto/api.proto
 
 package pb
 
@@ -432,5 +432,5 @@ var MatchingEngine_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "internal/proto/api.proto",
+	Metadata: "proto/api.proto",
 }
