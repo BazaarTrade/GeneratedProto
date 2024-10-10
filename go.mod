@@ -1,4 +1,4 @@
-module github.com/BazaarTrade/GeneratedProto
+module github.com/BazaarTrade/MatchingEngineProtoGen
 
 go 1.22.0
 
